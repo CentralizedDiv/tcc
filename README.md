@@ -17,7 +17,7 @@ MONGO_CONN_STRING=mongodb://{user}:{password}@mongo-db:27017/{db}
 
 ## Rodando
 
-Todas as partes do sistema rodam em containers docker, então basta rodar o comando abaixo para que o frontend, backend e banco de dados sejam criado:
+Todas as partes do sistema rodam em containers docker, então basta rodar o comando abaixo para que o frontend, backend e banco de dados sejam criados:
 ```
 docker compose up
 ```
@@ -26,7 +26,7 @@ docker compose up
 
 Ao mover os containers de um host para outro, é possível que se precise mover os dados já inseridos no mongo, como tudo está rodando em containers, os dados estão salvos num volume chamado `mongo-db-volume`, configurado no arquivo `docker-compose.yml`.
 
-Para exportar esses dados basta executar o seguinte comando com o container `mongo-db` (criado automaticamente pelo `docker-compose.yml`) criado:
+Para exportar esses dados basta executar o seguinte comando com o container `mongo-db` já criado (feito automaticamente ao rodar o `docker compose up`):
 ```bash
 docker run -i --rm --volumes-from mongo-db -v $(pwd)/mongo-db:/backup --link mongo-db --net default-network mongo bash -c 'mongodump -v --host mongo-db:27017 -u=admin -p=password --out=/backup'
 
