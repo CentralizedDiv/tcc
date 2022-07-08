@@ -30,7 +30,7 @@ export class DiscussionsService {
   }
 
   async findAll(offset = 0, limit?: number) {
-    const query = this.DiscussionModel.find().sort({ _id: 1 }).skip(offset);
+    const query = this.DiscussionModel.find().sort({ _id: -1 }).skip(offset);
 
     if (limit) {
       query.limit(limit);

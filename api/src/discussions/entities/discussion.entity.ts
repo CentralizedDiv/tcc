@@ -16,6 +16,10 @@ export class Discussion {
     default: function genUUID() {
       return uuidv4();
     },
+    index: {
+      unique: true,
+    },
+    unique: true,
   })
   id: string;
 

@@ -46,7 +46,7 @@ export class CommentsService {
   }
 
   async findAll(offset = 0, limit?: number) {
-    const query = this.CommentModel.find().sort({ _id: 1 }).skip(offset);
+    const query = this.CommentModel.find().sort({ _id: -1 }).skip(offset);
 
     if (limit) {
       query.limit(limit);
