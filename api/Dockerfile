@@ -21,7 +21,7 @@ ENV NODE_ENV production
 USER node
 WORKDIR /home/node
 
-COPY --from=builder --chown=node:node /home/node/.env ./.env
+COPY --from=builder --chown=node:node /home/node/.env* ./
 COPY --from=builder --chown=node:node /home/node/package*.json ./
 COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
 COPY --from=builder --chown=node:node /home/node/dist/ ./dist/

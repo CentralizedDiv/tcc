@@ -1,8 +1,18 @@
-export class CreateDiscussionDTO {
-  readonly system: string;
-  readonly label: string;
-  readonly description: string;
-  readonly extra: {
-    [key: string]: string;
+import { IsNotEmpty, IsObject, IsString } from 'class-validator';
+
+export class CreateDiscussionDto {
+  @IsNotEmpty()
+  @IsString()
+  system: string;
+
+  @IsString()
+  label: string | null;
+
+  @IsString()
+  description: string | null;
+
+  @IsObject()
+  extra: {
+    [key: string]: any;
   };
 }

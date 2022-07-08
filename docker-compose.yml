@@ -16,7 +16,14 @@ services:
       context: api/
       dockerfile: "Dockerfile"
     ports:
-      - "3000:3000"
+      - "5001:3001"
+  web:
+    container_name: web
+    build:
+      context: web/
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
 volumes:
   mongo-db-volume:
     name: mongo-db-volume

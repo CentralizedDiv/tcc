@@ -1,11 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
-export type DiscussionDocument = Discussion & Document;
-
-@Schema()
+@Schema({
+  versionKey: false,
+  toJSON: {
+    transform(_, ret) {
+      delete ret._id;
+    },
+  },
+})
 export class Discussion {
-  @Prop()
+  @Prop({
+    type: String,
+    default: function genUUID() {
+      return uuidv4();
+    },
+  })
   id: string;
 
   @Prop()
@@ -23,4 +34,5 @@ export class Discussion {
   };
 }
 
+export type DiscussionDocument = Discussion & Document;
 export const DiscussionSchema = SchemaFactory.createForClass(Discussion);

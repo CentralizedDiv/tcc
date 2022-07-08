@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { DiscussionsService } from './discussions.service';
-import { Discussion, DiscussionSchema } from './discussion.schema';
-import { DiscussionsController } from './discussios.controller';
+import { DiscussionsController } from './discussions.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Discussion, DiscussionSchema } from './entities/discussion.entity';
+import { SystemsModule } from 'src/systems/systems.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Discussion.name, schema: DiscussionSchema },
     ]),
+    SystemsModule,
   ],
   controllers: [DiscussionsController],
   providers: [DiscussionsService],
+  exports: [DiscussionsService],
 })
 export class DiscussionsModule {}
