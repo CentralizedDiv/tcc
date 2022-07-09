@@ -11,7 +11,15 @@ export const SystemFormCP = ({
   isEdit?: boolean;
 }) => {
   return (
-    <Form name="system-form" form={form} autoComplete="off" layout="vertical">
+    <Form
+      name="system-form"
+      form={form}
+      autoComplete="off"
+      layout="vertical"
+      onFinish={(values) => {
+        console.log(values);
+      }}
+    >
       {isEdit && (
         <Form.Item label="Id" name="id">
           <Input disabled={true} />

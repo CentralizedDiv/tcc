@@ -125,10 +125,12 @@ export const SystemsCT = () => {
 
   const handleSaveForm = useCallback(() => {
     form.submit();
-    const isValid = form.getFieldsError().every((i) => i.errors.length === 0);
-    if (isValid) {
-      onSave(form.getFieldsValue());
-    }
+    setTimeout(() => {
+      const isValid = form.getFieldsError().every((i) => i.errors.length === 0);
+      if (isValid) {
+        onSave(form.getFieldsValue());
+      }
+    });
   }, [form, onSave]);
 
   useEffect(() => {
