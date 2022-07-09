@@ -3,6 +3,8 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserDocument } from 'src/users/entities/user.entity';
 import * as bcrypt from 'bcryptjs';
+import { ExtractJwt } from 'passport-jwt';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +14,7 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(email);
+    const user = await this.usersService.findOneByEmail(email);
     if (user) {
       const isMatch = await bcrypt.compare(pass, user.password);
       if (isMatch) {
@@ -28,5 +30,11 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
     };
+  }
+
+  async getMe(req: Request) {
+    const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+    const user = this.jwtService.decode(token);
+    return this.usersService.findOne(user.sub);
   }
 }

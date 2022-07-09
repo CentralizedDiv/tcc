@@ -1,41 +1,44 @@
-import { useCallback, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import axios from "axios";
+import "antd/dist/antd.min.css";
+import { useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAppDispatch } from "./config/store";
+import { ProtectedLayout } from "./layout/protected/protected.layout";
+import { PublicLayout } from "./layout/public/public.layout";
+import { LoginCT } from "./pages/auth/login.container";
+import { getUser } from "./pages/auth/store/auth.actions";
+import { authenticate, STORAGE_KEY_TOKEN } from "./pages/auth/store/authSlice";
+import { CommentsCT } from "./pages/comments/comments.container";
+import { DiscussionsCT } from "./pages/discussions/discussions.container";
+import { SystemsCT } from "./pages/systems/systems.container";
+import { ProfileCT } from "./pages/profile/profile.container";
+import { SignupCT } from "./pages/auth/signup.container";
 
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-});
+export const App = () => {
+  const dispatch = useAppDispatch();
 
-function App() {
-  const [response, setResponse] = useState("");
-
-  const doRequest = useCallback(async () => {
-    const r = await instance.get("/");
-    setResponse(r.data);
-  }, []);
+  useEffect(() => {
+    const token = localStorage.getItem(STORAGE_KEY_TOKEN);
+    if (token) {
+      dispatch(authenticate({ token }));
+      dispatch(getUser());
+    }
+  }, [dispatch]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>Hot reload!</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button onClick={() => doRequest()}>Request backend</button>
-        <p>{response}</p>
-      </header>
-    </div>
-  );
-}
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/login" element={<LoginCT />} />
+        <Route path="/signup" element={<SignupCT />} />
+      </Route>
 
-export default App;
+      <Route element={<ProtectedLayout />}>
+        <Route path="discussions" element={<DiscussionsCT />} />
+        <Route path="systems" element={<SystemsCT />} />
+        <Route path="comments" element={<CommentsCT />} />
+        <Route path="profile" element={<ProfileCT />} />
+        <Route path="*" element={<Navigate replace to="/discussions" />} />
+      </Route>
+    </Routes>
+  );
+};

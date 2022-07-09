@@ -13,7 +13,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const _user = await this.findOne(createUserDto.email);
+    const _user = await this.findOneByEmail(createUserDto.email);
     if (_user) {
       throw new HttpException(
         'There is already an account with this email!',
@@ -33,7 +33,11 @@ export class UsersService {
     return user;
   }
 
-  findOne(email: string) {
+  findOneByEmail(email: string) {
     return this.UserModel.findOne({ email }).exec();
+  }
+
+  findOne(id: string) {
+    return this.UserModel.findOne({ id }, { password: 0, _id: 0 }).exec();
   }
 }
