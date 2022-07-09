@@ -14,7 +14,6 @@ export const login = createAsyncThunk(
     dispatch(getUser());
   }
 );
-
-export const getUser = createAsyncThunk("me", async () => {
+export const getUser = createAsyncThunk("auth/me", async () => {
   return await authApi.me();
 });

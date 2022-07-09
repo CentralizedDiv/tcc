@@ -1,9 +1,4 @@
-import {
-  createSelector,
-  createSlice,
-  PayloadAction,
-  SliceCaseReducers,
-} from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "src/config/store";
 import { IUser } from "../types/user.model";
 import { getUser } from "./auth.actions";
