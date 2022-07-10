@@ -23,6 +23,8 @@ import {
 } from "./store/discussionsSlice";
 import { IDiscussion } from "./types/discussion.model";
 
+const DEFAULT_PAGE_SIZE = 10;
+
 const ActionsContainer = styled.div`
   display: flex;
   align-items: center;
@@ -79,7 +81,7 @@ const columns: (
           <EditOutlined />
         </Button>
         <Popconfirm
-          title="Tem certeza que deseja deletar este discussão?"
+          title="Tem certeza que deseja apagar este discussão?"
           onConfirm={() => onDelete(id)}
           okText="Sim"
           cancelText="Não"
@@ -109,8 +111,8 @@ export const DiscussionsCT = () => {
   const [checkForm, setCheckForm] = useState(false);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
-    pageSize: 100,
-    total: 1000,
+    pageSize: DEFAULT_PAGE_SIZE,
+    total: 0,
   });
 
   const [form] = Form.useForm();
@@ -144,7 +146,7 @@ export const DiscussionsCT = () => {
       setEditing(discussionToEdit);
       if (discussionToEdit) {
         const { extra, ...values } = discussionToEdit;
-        const reducedExtra = Object.entries(extra).reduce(
+        const reducedExtra = Object.entries(extra ?? {}).reduce(
           (acc, [name, value]) => [...acc, { name, value }],
           [] as {}[]
         );
@@ -167,7 +169,7 @@ export const DiscussionsCT = () => {
       const isValid = form.getFieldsError().every((i) => i.errors.length === 0);
       if (isValid) {
         const { extra, ...values } = form.getFieldsValue();
-        const reducedExtra = extra.reduce(
+        const reducedExtra = (extra ?? {}).reduce(
           (acc: {}, curr: { name: string; value: string }) => ({
             ...acc,
             [curr.name]: curr.value,
@@ -181,7 +183,7 @@ export const DiscussionsCT = () => {
 
   const handleTableChange = useCallback((pagination: TablePaginationConfig) => {
     const current = pagination.current ?? 1;
-    const pageSize = pagination.pageSize ?? 100;
+    const pageSize = pagination.pageSize ?? DEFAULT_PAGE_SIZE;
 
     setPagination((p) => ({ ...p, current, pageSize }));
   }, []);
@@ -189,7 +191,7 @@ export const DiscussionsCT = () => {
   // Initial Fetch
   useEffect(() => {
     const currentPage = pagination.current ?? 1;
-    const pageSize = pagination.pageSize ?? 100;
+    const pageSize = pagination.pageSize ?? DEFAULT_PAGE_SIZE;
     const offset = (currentPage - 1) * pageSize;
 
     dispatch(
@@ -209,7 +211,10 @@ export const DiscussionsCT = () => {
   }, [isSaving, checkForm, closeForm]);
 
   useEffect(() => {
-    setPagination((pg) => ({ ...pg, total: pageCount * (pg.pageSize ?? 100) }));
+    setPagination((pg) => ({
+      ...pg,
+      total: pageCount * (pg.pageSize ?? DEFAULT_PAGE_SIZE),
+    }));
   }, [pageCount]);
 
   return (

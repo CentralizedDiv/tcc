@@ -1,6 +1,7 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import authSlice from "src/pages/auth/store/authSlice";
+import commentsSlice from "src/pages/comments/store/commentsSlice";
 import discussionsSlice from "src/pages/discussions/store/discussionsSlice";
 import systemsSlice from "src/pages/systems/store/systemsSlice";
 
@@ -9,6 +10,7 @@ export const store = configureStore({
     auth: authSlice,
     systems: systemsSlice,
     discussions: discussionsSlice,
+    comments: commentsSlice,
   },
 });
 

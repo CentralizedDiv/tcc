@@ -13,12 +13,7 @@ export const SignupCT = () => {
   const navigate = useNavigate();
 
   const onFinish = (values: any) => {
-    console.log("Success:", values);
     dispatch(login(values));
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
   };
 
   useEffect(() => {
@@ -31,7 +26,6 @@ export const SignupCT = () => {
         name="login"
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item

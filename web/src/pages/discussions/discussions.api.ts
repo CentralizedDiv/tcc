@@ -3,6 +3,15 @@ import { ArrayResponse } from "src/utils/util.types";
 import { CreateDiscussionDto } from "./store/discussions.actions";
 import { IDiscussion } from "./types/discussion.model";
 
+async function fetchDiscussionsById(id: string) {
+  const response = await api.get<IDiscussion>(`discussions/${id}`);
+  return response.data;
+}
+async function fetchDiscussionsByLabel(label: string) {
+  if (label.length === 0) return Promise.resolve([]);
+  const response = await api.get<IDiscussion[]>(`discussions?label=${label}`);
+  return response.data;
+}
 async function fetchDiscussions(offset: number, limit: number) {
   const response = await api.get<ArrayResponse<IDiscussion>>(
     `discussions?offset=${offset}&limit=${limit}`
@@ -31,6 +40,8 @@ function deleteDiscussion(id: string) {
 }
 const endpoints = {
   fetchDiscussions,
+  fetchDiscussionsByLabel,
+  fetchDiscussionsById,
   createDiscussion,
   updateDiscussion,
   deleteDiscussion,
