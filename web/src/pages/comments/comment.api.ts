@@ -11,6 +11,10 @@ async function fetchComments(offset: number, limit: number, query?: string) {
   const response = await api.get<ArrayResponse<IComment>>(endpoint);
   return response.data;
 }
+async function createBatchComments(createCommentDto: CreateCommentDto[]) {
+  const response = await api.post<IComment>("comments/batch", createCommentDto);
+  return response.data;
+}
 async function createComment(createCommentDto: CreateCommentDto) {
   const response = await api.post<IComment>("comments", createCommentDto);
   return response.data;
@@ -31,6 +35,7 @@ function deleteComment(id: string) {
 const endpoints = {
   fetchComments,
   createComment,
+  createBatchComments,
   updateComment,
   deleteComment,
 };

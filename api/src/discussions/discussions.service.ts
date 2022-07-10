@@ -43,11 +43,23 @@ export class DiscussionsService {
     });
   }
 
+  async findByLabel(label: string) {
+    const re = new RegExp(`.*${label}.*`, 'i');
+    const query = this.DiscussionModel.find(
+      { label: re },
+      { id: 1, label: 1, system: 1 },
+    );
+
+    return query.exec();
+  }
+
   findOne(id: string) {
     return this.DiscussionModel.findOne({ id }).exec();
   }
 
   update(id: string, updateDiscussionDto: UpdateDiscussionDto) {
+    this.systemService.createIfNotExists(updateDiscussionDto.system);
+
     return this.DiscussionModel.findOneAndUpdate({ id }, updateDiscussionDto, {
       new: true,
     });

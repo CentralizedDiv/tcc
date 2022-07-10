@@ -45,14 +45,20 @@ export class CommentsService {
     return Promise.all(operations);
   }
 
-  async findAll(offset = 0, limit?: number) {
-    const query = this.CommentModel.find().sort({ _id: -1 }).skip(offset);
+  async findAll(offset = 0, limit?: number, customQuery?: string) {
+    let findFilter = {};
+    if (customQuery) {
+      findFilter = JSON.parse(customQuery);
+    }
+    const query = this.CommentModel.find(findFilter)
+      .sort({ _id: -1 })
+      .skip(offset);
 
     if (limit) {
       query.limit(limit);
     }
     const results = await query.exec();
-    const count = await this.CommentModel.count();
+    const count = await this.CommentModel.count(findFilter);
     return Promise.resolve({
       results,
       pageCount: limit ? Math.ceil(count / limit) : 1,

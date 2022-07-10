@@ -32,7 +32,12 @@ export class DiscussionsController {
   }
 
   @Get()
-  findAll(@Query() { offset, limit }: PaginationParams) {
+  findAll(
+    @Query() { offset, limit, label }: PaginationParams & { label?: string },
+  ) {
+    if (label) {
+      return this.discussionsService.findByLabel(label);
+    }
     return this.discussionsService.findAll(offset, limit);
   }
 

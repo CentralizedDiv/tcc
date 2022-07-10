@@ -16,6 +16,7 @@ import {
   ExclamationCircleOutlined,
   EditOutlined,
   LogoutOutlined,
+  ImportOutlined,
 } from "@ant-design/icons";
 import styled from "styled-components";
 import { useAppDispatch } from "src/config/store";
@@ -58,6 +59,7 @@ const items = [
   getItem("Discussões", "/discussions", <SnippetsOutlined />),
   getItem("Comentários", "/comments", <CommentOutlined />),
   getItem("Sistemas", "/systems", <DesktopOutlined />),
+  getItem("Importar", "/import", <ImportOutlined />),
 ];
 
 export const ProtectedLayout = () => {

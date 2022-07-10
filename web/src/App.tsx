@@ -12,6 +12,7 @@ import { DiscussionsCT } from "./pages/discussions/discussions.container";
 import { SystemsCT } from "./pages/systems/systems.container";
 import { ProfileCT } from "./pages/profile/profile.container";
 import { SignupCT } from "./pages/auth/signup.container";
+import { ImportDataCT } from "./pages/import-data/import-data.container";
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ export const App = () => {
         <Route path="systems" element={<SystemsCT />} />
         <Route path="comments" element={<CommentsCT />} />
         <Route path="profile" element={<ProfileCT />} />
+        <Route path="import" element={<ImportDataCT />} />
         <Route path="*" element={<Navigate replace to="/discussions" />} />
       </Route>
     </Routes>

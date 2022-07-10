@@ -32,8 +32,10 @@ export class CommentsController {
   }
 
   @Get()
-  findAll(@Query() { offset, limit }: PaginationParams) {
-    return this.commentsService.findAll(offset, limit);
+  findAll(
+    @Query() { offset, limit, query }: PaginationParams & { query: string },
+  ) {
+    return this.commentsService.findAll(offset, limit, query);
   }
 
   @Get(':id')
