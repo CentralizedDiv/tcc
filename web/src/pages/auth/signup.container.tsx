@@ -14,8 +14,6 @@ export const SignupCT = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  console.log("Signup", accountCreated)
-
   const onFinish = (values: any) => {
     dispatch(signup(values));
   };
