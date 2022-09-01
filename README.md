@@ -12,6 +12,7 @@ MONGO_INITDB_ROOT_PASSWORD=
 e outro .env em /api, com o seguinte formato:
 ```
 MONGO_CONN_STRING=mongodb://{user}:{password}@mongo-db:27017/{db}
+JWT_SECRET={secret}
 ```
 
 
