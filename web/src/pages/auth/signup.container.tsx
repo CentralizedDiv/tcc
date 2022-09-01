@@ -1,24 +1,29 @@
-import { Form, Input, Button } from "antd";
-import { login } from "./store/auth.actions";
+import { Form, Input, Button, Typography } from "antd";
+import { signup } from "./store/auth.actions";
 import { useAppDispatch } from "src/config/store";
 import { useSelector } from "react-redux";
-import { selectUser } from "./store/authSlice";
+import { selectAccountCreated, selectAuthError, selectUser } from "./store/authSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 export const SignupCT = () => {
   const user = useSelector(selectUser);
+  const accountCreated = useSelector(selectAccountCreated);
+  const error = useSelector(selectAuthError);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  console.log("Signup", accountCreated)
+
   const onFinish = (values: any) => {
-    dispatch(login(values));
+    dispatch(signup(values));
   };
 
   useEffect(() => {
     if (user) navigate("/discussions", { replace: true });
-  }, [user, navigate]);
+    if (accountCreated) navigate("/login", { replace: true });
+  }, [user, accountCreated, navigate]);
 
   return (
     <div>
@@ -69,6 +74,14 @@ export const SignupCT = () => {
         </Form.Item>
 
         <Form.Item>
+          {error && (
+            <Typography.Text
+              type="danger"
+              style={{ display: "inline-block", marginBottom: 16 }}
+            >
+              {error}
+            </Typography.Text>
+          )}
           <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
             Submit
           </Button>

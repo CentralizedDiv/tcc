@@ -2,15 +2,19 @@ import { Form, Input, Button } from "antd";
 import { login } from "./store/auth.actions";
 import { useAppDispatch } from "src/config/store";
 import { useSelector } from "react-redux";
-import { selectUser } from "./store/authSlice";
-import { useEffect } from "react";
+import { clearError, selectAccountCreated, selectUser } from "./store/authSlice";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 export const LoginCT = () => {
   const user = useSelector(selectUser);
+  const accountCreated = useSelector(selectAccountCreated);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [showAccountCreated, setAC] = useState(false)
+
+  console.log("Login", showAccountCreated)
 
   const onFinish = (values: any) => {
     dispatch(login(values));
@@ -19,6 +23,20 @@ export const LoginCT = () => {
   useEffect(() => {
     if (user) navigate("/discussions", { replace: true });
   }, [user, navigate]);
+  
+  useEffect(() => {
+    if(accountCreated) {
+      setAC(true)
+    }
+    dispatch(clearError)
+  }, [dispatch, accountCreated])
+
+  useEffect(() => {
+    if(showAccountCreated) {
+      setAC(false)
+      alert("Conta criada!")
+    }
+  }, [showAccountCreated])
 
   return (
     <div>

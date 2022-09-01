@@ -7,7 +7,7 @@ import {
   useNavigate,
   useOutlet,
 } from "react-router-dom";
-import { selectUser, unauthenticate } from "src/pages/auth/store/authSlice";
+import { selectAccountCreated, selectUser, unauthenticate } from "src/pages/auth/store/authSlice";
 import {
   CommentOutlined,
   SnippetsOutlined,

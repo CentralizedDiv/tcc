@@ -29,8 +29,8 @@ const ENV = process.env.NODE_ENV;
     DiscussionsModule,
     CommentsModule,
     SystemsModule,
-    UsersModule,
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

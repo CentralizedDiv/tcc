@@ -14,6 +14,21 @@ export const login = createAsyncThunk(
     dispatch(getUser());
   }
 );
+export interface SignupDto {
+  name: string
+  email: string;
+  password: string;
+}
+export const signup = createAsyncThunk(
+  "auth/signup",
+  async (signupDto: SignupDto) => {
+    try{
+      await authApi.signup(signupDto);
+    } catch (err: any) {
+      throw err?.response.data ?? 'Erro inesperado'
+    }
+  }
+);
 export const getUser = createAsyncThunk("auth/me", async () => {
   return await authApi.me();
 });

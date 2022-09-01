@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "src/config/store";
 import { IUser } from "../types/user.model";
-import { getUser } from "./auth.actions";
+import { getUser, signup } from "./auth.actions";
 
 export const STORAGE_KEY_TOKEN = "TOKEN";
 
@@ -12,6 +12,8 @@ export interface AuthState {
     authenticating: boolean;
     fetchingUser: boolean;
   };
+  error: string | null
+  accountCreated: boolean;
 }
 
 const initialState: AuthState = {
@@ -21,6 +23,8 @@ const initialState: AuthState = {
     authenticating: false,
     fetchingUser: false,
   },
+  error: null,
+  accountCreated: false
 };
 
 export const authSlice = createSlice({
@@ -40,9 +44,24 @@ export const authSlice = createSlice({
       state.token = null;
       state.user = null;
     },
+    clearError(state) {
+      state.error = null;
+      state.accountCreated = false
+    },
   },
   extraReducers: (builder) => {
     builder
+      .addCase(signup.pending, (state) => {
+        state.loadingStatus.authenticating = true;
+      })
+      .addCase(signup.fulfilled, (state) => {
+        state.loadingStatus.authenticating = false;
+        state.accountCreated = true
+        state.error = null
+      })
+      .addCase(signup.rejected, (state, action: any) => {
+        state.error = action.error?.message;
+      })
       .addCase(getUser.pending, (state) => {
         state.loadingStatus.fetchingUser = true;
       })
@@ -53,9 +72,11 @@ export const authSlice = createSlice({
   },
 });
 
-export const { authenticate, unauthenticate } = authSlice.actions;
+export const { authenticate, unauthenticate, clearError } = authSlice.actions;
 
 const selectAuth = (state: RootState) => state.auth;
 export const selectUser = createSelector(selectAuth, (state) => state.user);
+export const selectAuthError = createSelector(selectAuth, (state) => state.error);
+export const selectAccountCreated = createSelector(selectAuth, (state) => state.accountCreated);
 
 export default authSlice.reducer;
