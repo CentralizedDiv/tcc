@@ -22,7 +22,7 @@ const ENV = process.env.NODE_ENV;
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
-        uri: config.get('MONGO_CONN_STRING'),
+        uri: 'mongodb://admin:xSpP1CxgS%255EjT2D5ZNz@localhost:27017/main',
       }),
       inject: [ConfigService],
     }),
